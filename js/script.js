@@ -134,8 +134,9 @@ class ShoppingCart {
 // Wait for the page (DOM) to fully load before running this code
 document.addEventListener('DOMContentLoaded', async () => {
   // Step 1: Find HTML elements we'll need to update
-  const totalEl = document.querySelector('.total');  // Where to show the total price
-  const listProductsEl = document.querySelector('.list-products');  // Where to put product cards
+  const totalEls = document.querySelectorAll('.total');
+  const totalItemsEls = document.querySelectorAll('.total-items');
+  const listProductsEl = document.querySelector('.list-products');
 
   // Create one shopping cart for this page
   const cart = new ShoppingCart();
@@ -150,83 +151,75 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Update the total price shown at the top of the page
   function updateTotal() {
-    totalEl.textContent = ` ${cart.getTotalPrice()} $ `;
+    totalEls.forEach(el => el.textContent = ` ${cart.getTotalPrice()} $ `);
+    totalItemsEls.forEach(el => el.textContent = ` ${cart.getTotalItems()} `);
   }
 
-  // Create a placeholder (like "S" for Sneakers) when product has no image
-  function createPlaceholder(product) {
-    const placeholder = document.createElement('div');
-    placeholder.className = 'product-placeholder';
-    placeholder.textContent = product.name.charAt(0).toUpperCase();
-    return placeholder;
-  }
-
-  // ---- Main Rendering Function ----
-  // This function builds ONE product card and adds it to the page
   function renderProductCard(product) {
-    // Create the card container
-    const wrapper = document.createElement('div');
-    wrapper.className = 'card-body';
-
     const card = document.createElement('div');
-    card.className = 'card product-card';
-    card.style.width = '18rem';
+    card.className = 'pcard';
 
-    // Add image or placeholder
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'pcard-img-wrap';
+
     if (product.image) {
       const img = document.createElement('img');
       img.src = product.image;
-      img.className = 'card-img-top';
-      img.alt = product.name.toLowerCase();
-      card.appendChild(img);
+      img.className = 'pcard-img';
+      img.alt = product.name;
+      imgWrap.appendChild(img);
     } else {
-      // No image? Show a letter placeholder instead
-      card.appendChild(createPlaceholder(product));
+      const ph = document.createElement('div');
+      ph.className = 'pcard-ph';
+      ph.textContent = product.name.charAt(0);
+      imgWrap.appendChild(ph);
     }
 
-    // Add product info (title, description, price)
+    if (product.id <= 3) {
+      const tag = document.createElement('span');
+      tag.className = 'pcard-tag';
+      tag.textContent = 'New';
+      imgWrap.appendChild(tag);
+    }
+
+    card.appendChild(imgWrap);
+
     const body = document.createElement('div');
-    body.className = 'card-body';
-
+    body.className = 'pcard-body';
     body.innerHTML = `
-      <h5 class="card-title">${product.name}</h5>
-      <p class="card-text">${product.description}</p>
-      <h4 class="unit-price">${formatPrice(product.price)}</h4>
+      <div class="pcard-cat">Featured</div>
+      <div class="pcard-row">
+        <span class="pcard-name">${product.name}</span>
+        <span class="pcard-price">${formatPrice(product.price)}</span>
+      </div>
+      <p class="pcard-desc">${product.description}</p>
+      <div class="pcard-foot">
+        <div class="qty">
+          <button class="minus" aria-label="Decrease">-</button>
+          <span class="qty-val">0</span>
+          <button class="plus" aria-label="Increase">+</button>
+        </div>
+        <div class="acts">
+          <button class="act-btn trash" aria-label="Remove">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            Remove
+          </button>
+          <button class="act-btn heart" aria-label="Favorite">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            Save
+          </button>
+        </div>
+      </div>
     `;
-
-    // Add quantity controls (+ button, quantity display, - button)
-    const controls = document.createElement('div');
-    controls.innerHTML = `
-      <i class="fas fa-plus-circle" role="button" aria-label="Increase quantity"></i>
-      <span class="quantity">0</span>
-      <i class="fas fa-minus-circle" role="button" aria-label="Decrease quantity"></i>
-    `;
-
-    // Add action buttons (delete, favorite)
-    const actions = document.createElement('div');
-    actions.innerHTML = `
-      <i class="fas fa-trash-alt" role="button" aria-label="Remove item"></i>
-      <i class="fas fa-heart" role="button" aria-label="Favorite item"></i>
-    `;
-
-    // Assemble all the parts into the card
-    body.appendChild(controls);
-    body.appendChild(actions);
     card.appendChild(body);
-    wrapper.appendChild(card);
+    listProductsEl.appendChild(card);
 
-    // Add the finished card to the page
-    listProductsEl.appendChild(wrapper);
+    const quantityEl = body.querySelector('.qty-val');
+    const plusBtn = body.querySelector('.plus');
+    const minusBtn = body.querySelector('.minus');
+    const trashBtn = body.querySelector('.trash');
+    const heartBtn = body.querySelector('.heart');
 
-    // ---- Wire up the buttons ----
-    // Find the buttons in this card so we can add click handlers
-    const quantityEl = controls.querySelector('.quantity');
-    const plusBtn = controls.querySelector('.fa-plus-circle');
-    const minusBtn = controls.querySelector('.fa-minus-circle');
-    const trashBtn = actions.querySelector('.fa-trash-alt');
-    const heartBtn = actions.querySelector('.fa-heart');
-
-    // Helper: update this card's quantity display and the total
     const syncCardQuantity = () => {
       const item = cart.getItem(product.id);
       const quantity = item ? item.quantity : 0;
@@ -234,31 +227,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       updateTotal();
     };
 
-    // Plus button: add 1 more of this product to the cart
     plusBtn.addEventListener('click', () => {
       cart.addItem(product, 1);
       syncCardQuantity();
     });
 
-    // Minus button: remove 1 of this product from the cart
     minusBtn.addEventListener('click', () => {
       cart.decreaseItem(product.id, 1);
       syncCardQuantity();
     });
 
-    // Trash button: remove all of this product from the cart
     trashBtn.addEventListener('click', () => {
       cart.removeItem(product.id);
       syncCardQuantity();
     });
 
-    // Heart button: toggle favorite status (changes color)
     heartBtn.addEventListener('click', () => {
       heartBtn.classList.toggle('liked');
-      heartBtn.style.color = heartBtn.classList.contains('liked') ? 'red' : 'black';
     });
 
-    // Initial sync to show the current quantity
     syncCardQuantity();
   }
 
@@ -274,7 +261,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     // Step 1: Get the products.json file from the server
-    const response = await fetch('../products.json');
+    const response = await fetch('products.json');
     if (!response.ok) {
       throw new Error(`Failed to load products.json (${response.status})`);
     }
@@ -325,7 +312,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     // If something went wrong, show an error message instead of crashing
     listProductsEl.innerHTML = `
-      <div class="alert alert-danger w-100" role="alert">
+      <div class="error-banner">
         Could not load products from products.json. ${error.message}
       </div>
     `;
