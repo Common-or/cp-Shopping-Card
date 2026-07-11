@@ -1,0 +1,60 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Baskets",
+      "price": 100,
+      "image": "assets/baskets.png",
+      "description": "Comfortable and stylish baskets for everyday wear"
+    },
+    {
+      "id": 2,
+      "name": "Socks",
+      "price": 20,
+      "image": "assets/socks.png",
+      "description": "Premium quality socks with polka dot pattern"
+    },
+    {
+      "id": 3,
+      "name": "Bag",
+      "price": 50,
+      "image": "assets/bag.png",
+      "description": "Durable and fashionable bag for any occasion"
+    },
+    {
+      "id": 4,
+      "name": "Sneakers",
+      "price": 120,
+      "image": null,
+      "description": "Modern sneakers with leopard print design"
+    },
+    {
+      "id": 5,
+      "name": "Backpack",
+      "price": 85,
+      "image": null,
+      "description": "Spacious backpack perfect for travel and daily use"
+    },
+    {
+      "id": 6,
+      "name": "Wallet",
+      "price": 35,
+      "image": null,
+      "description": "Compact wallet with multiple card slots"
+    },
+    {
+      "id": 7,
+      "name": "Belt",
+      "price": 45,
+      "image": null,
+      "description": "Elegant leather belt for casual and formal wear"
+    },
+    {
+      "id": 8,
+      "name": "Scarf",
+      "price": 40,
+      "image": null,
+      "description": "Soft and warm scarf in classic design"
+    }
+  ]
+}

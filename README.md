@@ -1,63 +1,48 @@
-# Shopping Cart - DOM Project 1
+# Shopping Cart - OOJ DOM Project
 
-A functional shopping cart built with vanilla JavaScript, HTML, and CSS.
+A shopping cart exercise rebuilt with Object-Oriented JavaScript, vanilla JS, HTML, and CSS.
 
 ## Overview
 
-Manage pre-selected items in a shopping cart. Adjust quantities, delete items, toggle favorites, and see the total price update in real-time.
+This checkpoint recreates the shopping cart from the DOM exercise using ES6 classes for `Product`, `ShoppingCartItem`, and `ShoppingCart`.
 
-Deadline: 17.05.2026
+## Classes
 
-## Features
+### Product
+Stores the product `id`, `name`, and `price`, plus the optional `image` and `description` used by the UI.
 
-- Increase or decrease item quantities with +/- buttons
-- Delete items from the cart
-- Toggle favorite items with a heart button (turns red when liked)
-- Real-time total price calculation
-- Responsive design with Bootstrap 5
+### ShoppingCartItem
+Stores a `product` and its `quantity`, and exposes `calculateTotalPrice()` for the line total.
 
-## Technologies
+### ShoppingCart
+Stores an array of `ShoppingCartItem` instances and provides methods to:
+- get the total number of items in the cart
+- add items
+- remove items
+- display cart items in the console
 
-- HTML5
-- CSS3
-- JavaScript (vanilla)
-- Bootstrap 5
-- Font Awesome 6
+## Demo Flow
 
-## Project Structure
+The script tests the required behavior by:
+1. Creating products
+2. Creating a shopping cart
+3. Adding items to the cart
+4. Displaying the cart
+5. Removing an item from the cart
 
-```
-cp-Shopping-Card/
-├── index.html
-├── js/script.js
-├── style/style.css
-├── assets/
-│   ├── baskets.png
-│   ├── socks.png
-│   └── bag.png
-└── README.md
-```
+Open the browser console to see the test output.
 
-## Getting Started
-
-1. Clone the repository and navigate to the folder
-2. Open `index.html` in a browser or serve locally:
-   ```bash
-   python -m http.server 8000
-   ```
-3. Open http://localhost:8000
-
-## Usage
+## UI Behavior
 
 - Click + to increase quantity
-- Click - to decrease quantity (minimum 0)
-- Click trash icon to remove an item
-- Click heart icon to toggle favorite
-- Total price updates automatically
+- Click - to decrease quantity
+- Click trash to remove the product from the cart
+- The total price updates in real time
 
-## Implementation
+## Run
 
-- DOM event listeners on +/- buttons, delete, and like icons
-- Real-time price calculation based on quantities
-- Prevents negative quantities
-- Clean, commented JavaScript code
+Open `index.html` in a browser, or serve the folder locally with:
+
+```bash
+python -m http.server 8000
+```
