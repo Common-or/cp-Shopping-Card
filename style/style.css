@@ -29,9 +29,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--f
 /* ── Hero ── */
 .hero{background:linear-gradient(135deg,#fafafa 0%,#f0f0f0 100%);border-bottom:1px solid var(--border);padding:56px 0 48px;position:relative;overflow:hidden}
 .hero::after{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,0,0,.03) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;background:var(--green-bg);color:var(--green);border:1px solid #bbf7d0;margin-bottom:16px}
-.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .hero h1{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:12px}
 .hero h1 span{background:linear-gradient(135deg,var(--fg),#52525b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{font-size:16px;color:var(--muted-fg);max-width:480px;line-height:1.6}
