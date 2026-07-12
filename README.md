@@ -39,10 +39,3 @@ Open the browser console to see the test output.
 - Click trash to remove the product from the cart
 - The total price updates in real time
 
-## Run
-
-Open `index.html` in a browser, or serve the folder locally with:
-
-```bash
-python -m http.server 8000
-```
